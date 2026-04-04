@@ -1,19 +1,30 @@
-import { Button } from "@/components/ui/button"
+import BalanceTrendChart from "./components/BalanceTrendChart"
+import CategoryBreakDownChart from "./components/CategoryBreakDownChart"
+import InsightsSection from "./components/InsightsSection"
+import SummaryCard from "./components/SummaryCard"
+
+import TransactionList from "./components/TransactionList"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
+    <div className="flex min-h-screen">
+      <header></header>
+      <main>
+        <div className="flex">
+          <SummaryCard />
+          <SummaryCard />
+          <SummaryCard />
+        </div>
         <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+          <BalanceTrendChart />
+          <CategoryBreakDownChart />
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
+        <div>
+          <InsightsSection />
         </div>
-      </div>
+
+        <TransactionList />
+      </main>
     </div>
   )
 }
