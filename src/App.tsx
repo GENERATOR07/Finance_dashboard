@@ -5,8 +5,9 @@ import SummaryCard from "./components/SummaryCard"
 import { generateMockTransactions } from "../utils/mockData"
 import { calculateTotals } from "../utils/calculations"
 import TransactionList from "./components/TransactionList"
-import { DollarSign, ShoppingCart, Wallet } from "lucide-react"
+import { TrendingDown, TrendingUp, Wallet } from "lucide-react"
 import { useTheme } from "./components/theme-provider"
+import Header from "./components/Header"
 const tansactions = generateMockTransactions()
 const total = calculateTotals(tansactions)
 export function App() {
@@ -15,10 +16,8 @@ export function App() {
     setTheme(theme === "light" ? "dark" : "light")
   }
   return (
-    <div className="flex min-h-screen">
-      <header>
-        <button onClick={handleClick}>Toggle Theme</button>
-      </header>
+    <div className="min-h-screen">
+      <Header darkMode={theme === "dark"} toggleDarkMode={handleClick} />
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
           <SummaryCard
@@ -30,13 +29,13 @@ export function App() {
           <SummaryCard
             title="Total Income"
             amount={total.totalIncome}
-            icon={DollarSign}
+            icon={TrendingUp}
             colorClass="bg-green-500"
           />
           <SummaryCard
             title="Total Expenses"
             amount={total.totalExpenses}
-            icon={ShoppingCart}
+            icon={TrendingDown}
             colorClass="bg-red-500"
           />
         </div>
