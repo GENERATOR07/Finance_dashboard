@@ -1,5 +1,5 @@
 import { format, parseISO, startOfMonth } from "date-fns"
-import type { MonthlyData, Transaction } from "../types/finance"
+import type { CategoryTotal, MonthlyData, Transaction } from "../types/finance"
 
 export function calculateTotals(transactions: Transaction[]) {
   const income = transactions
@@ -41,4 +41,20 @@ export function getMonthlyData(transactions: Transaction[]): MonthlyData[] {
       balance: data.income - data.expenses,
     }))
     .sort((a, b) => a.month.localeCompare(b.month))
+}
+export function getCategoryTotals(
+  transactions: Transaction[]
+): CategoryTotal[] {
+  const categoryMap = new Map<string, number>()
+
+  transactions
+    .filter((t) => t.type === "expense")
+    .forEach((t) => {
+      const current = categoryMap.get(t.category) || 0
+      categoryMap.set(t.category, current + t.amount)
+    })
+
+  return Array.from(categoryMap.entries())
+    .map(([category, total]) => ({ category, total }))
+    .sort((a, b) => b.total - a.total)
 }

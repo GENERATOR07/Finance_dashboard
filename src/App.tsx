@@ -1,9 +1,13 @@
 import { BalanceTrendChart } from "./components/BalanceTrendChart"
-import CategoryBreakDownChart from "./components/CategoryBreakDownChart"
+import CategoryBreakdownChart from "./components/CategoryBreakDownChart"
 import InsightsSection from "./components/InsightsSection"
 import SummaryCard from "./components/SummaryCard"
 import { generateMockTransactions } from "../utils/mockData"
-import { calculateTotals, getMonthlyData } from "../utils/calculations"
+import {
+  calculateTotals,
+  getCategoryTotals,
+  getMonthlyData,
+} from "../utils/calculations"
 import TransactionList from "./components/TransactionList"
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react"
 import { useTheme } from "./components/theme-provider"
@@ -11,6 +15,7 @@ import Header from "./components/Header"
 const tansactions = generateMockTransactions()
 const total = calculateTotals(tansactions)
 const monthlyData = getMonthlyData(tansactions)
+const categoryTotals = getCategoryTotals(tansactions)
 export function App() {
   const { theme, setTheme } = useTheme()
   const handleClick = () => {
@@ -40,9 +45,12 @@ export function App() {
             colorClass="bg-red-500"
           />
         </div>
-        <div>
+        <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <BalanceTrendChart data={monthlyData} darkMode={theme === "dark"} />
-          <CategoryBreakDownChart />
+          <CategoryBreakdownChart
+            data={categoryTotals}
+            darkMode={theme === "dark"}
+          />
         </div>
         <div>
           <InsightsSection />

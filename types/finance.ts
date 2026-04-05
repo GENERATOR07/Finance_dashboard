@@ -16,3 +16,7 @@ export interface MonthlyData {
   expenses: number
   balance: number
 }
+export interface CategoryTotal {
+  category: string
+  total: number
+}
