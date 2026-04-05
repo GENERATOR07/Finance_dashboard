@@ -9,3 +9,10 @@ export interface Transaction {
   type: TransactionType
   description: string
 }
+
+export interface MonthlyData {
+  month: string
+  income: number
+  expenses: number
+  balance: number
+}

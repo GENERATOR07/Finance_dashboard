@@ -1,4 +1,4 @@
-import BalanceTrendChart from "./components/BalanceTrendChart"
+import { BalanceTrendChart } from "./components/BalanceTrendChart"
 import CategoryBreakDownChart from "./components/CategoryBreakDownChart"
 import InsightsSection from "./components/InsightsSection"
 import SummaryCard from "./components/SummaryCard"
@@ -40,7 +40,7 @@ export function App() {
           />
         </div>
         <div>
-          <BalanceTrendChart />
+          <BalanceTrendChart darkMode={theme === "dark"} />
           <CategoryBreakDownChart />
         </div>
         <div>
