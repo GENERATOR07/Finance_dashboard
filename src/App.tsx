@@ -53,7 +53,7 @@ export function App() {
           />
         </div>
         <div>
-          <InsightsSection />
+          <InsightsSection transactions={tansactions} />
         </div>
 
         <TransactionList />

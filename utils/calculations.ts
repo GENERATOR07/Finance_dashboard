@@ -58,3 +58,47 @@ export function getCategoryTotals(
     .map(([category, total]) => ({ category, total }))
     .sort((a, b) => b.total - a.total)
 }
+export function getTopCategory(
+  transactions: Transaction[]
+): { category: string; amount: number } | null {
+  const categories = getCategoryTotals(transactions)
+  return categories.length > 0
+    ? { category: categories[0].category, amount: categories[0].total }
+    : null
+}
+
+export function getMonthlyComparison(transactions: Transaction[]): {
+  current: number
+  previous: number
+  change: number
+} {
+  const now = new Date()
+  const currentMonth = format(startOfMonth(now), "yyyy-MM")
+  const previousMonth = format(
+    startOfMonth(new Date(now.getFullYear(), now.getMonth() - 1, 1)),
+    "yyyy-MM"
+  )
+
+  const currentExpenses = transactions
+    .filter(
+      (t) =>
+        t.type === "expense" &&
+        format(startOfMonth(parseISO(t.date)), "yyyy-MM") === currentMonth
+    )
+    .reduce((sum, t) => sum + t.amount, 0)
+
+  const previousExpenses = transactions
+    .filter(
+      (t) =>
+        t.type === "expense" &&
+        format(startOfMonth(parseISO(t.date)), "yyyy-MM") === previousMonth
+    )
+    .reduce((sum, t) => sum + t.amount, 0)
+
+  const change =
+    previousExpenses > 0
+      ? ((currentExpenses - previousExpenses) / previousExpenses) * 100
+      : 0
+
+  return { current: currentExpenses, previous: previousExpenses, change }
+}
