@@ -1,8 +1,8 @@
+import { useMemo } from "react"
 import { BalanceTrendChart } from "./components/BalanceTrendChart"
 import CategoryBreakdownChart from "./components/CategoryBreakDownChart"
 import InsightsSection from "./components/InsightsSection"
 import SummaryCard from "./components/SummaryCard"
-import { generateMockTransactions } from "../utils/mockData"
 import {
   calculateTotals,
   getCategoryTotals,
@@ -12,11 +12,19 @@ import TransactionList from "./components/TransactionList"
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react"
 import { useTheme } from "./components/theme-provider"
 import Header from "./components/Header"
-const tansactions = generateMockTransactions()
-const total = calculateTotals(tansactions)
-const monthlyData = getMonthlyData(tansactions)
-const categoryTotals = getCategoryTotals(tansactions)
+import useFinance from "@/hooks/useFinance"
+
 export function App() {
+  const { transactions } = useFinance()
+  const total = useMemo(() => calculateTotals(transactions), [transactions])
+  const monthlyData = useMemo(
+    () => getMonthlyData(transactions),
+    [transactions]
+  )
+  const categoryTotals = useMemo(
+    () => getCategoryTotals(transactions),
+    [transactions]
+  )
   const { theme, setTheme } = useTheme()
   const handleClick = () => {
     setTheme(theme === "light" ? "dark" : "light")
@@ -53,7 +61,7 @@ export function App() {
           />
         </div>
         <div>
-          <InsightsSection transactions={tansactions} />
+          <InsightsSection transactions={transactions} />
         </div>
 
         <TransactionList />
