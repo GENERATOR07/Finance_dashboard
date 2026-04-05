@@ -3,13 +3,14 @@ import CategoryBreakDownChart from "./components/CategoryBreakDownChart"
 import InsightsSection from "./components/InsightsSection"
 import SummaryCard from "./components/SummaryCard"
 import { generateMockTransactions } from "../utils/mockData"
-import { calculateTotals } from "../utils/calculations"
+import { calculateTotals, getMonthlyData } from "../utils/calculations"
 import TransactionList from "./components/TransactionList"
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react"
 import { useTheme } from "./components/theme-provider"
 import Header from "./components/Header"
 const tansactions = generateMockTransactions()
 const total = calculateTotals(tansactions)
+const monthlyData = getMonthlyData(tansactions)
 export function App() {
   const { theme, setTheme } = useTheme()
   const handleClick = () => {
@@ -40,7 +41,7 @@ export function App() {
           />
         </div>
         <div>
-          <BalanceTrendChart darkMode={theme === "dark"} />
+          <BalanceTrendChart data={monthlyData} darkMode={theme === "dark"} />
           <CategoryBreakDownChart />
         </div>
         <div>
