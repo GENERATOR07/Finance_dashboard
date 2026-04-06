@@ -29,6 +29,26 @@ This project was completed as a frontend assessment. It focuses on clear UI stru
 - Local persistence using `localStorage`
 - Fake API-based CRUD flow for transactions
 
+## Approach
+
+The dashboard was built to keep the UI simple, modular, and easy to reason about.
+
+- `React Context` is used for app-level state management
+- `FinanceContext` manages transaction data, loading state, mutation state, and transaction actions
+- `RoleContext` manages the selected demo role (`admin` / `viewer`)
+- Custom hooks (`useFinance`, `useRole`) keep component consumption clean
+- Transaction CRUD is routed through a fake API layer to demonstrate frontend API handling without requiring a backend
+- `localStorage` is used for persistence so data survives refreshes during review
+
+## Requirement Mapping
+
+- **Dashboard Overview**: summary cards, balance trend chart, and spending breakdown chart
+- **Transactions Section**: searchable, filterable, sortable transaction list with add, edit, delete, and export
+- **Basic Role Based UI**: viewer/admin role switching on the frontend with different transaction permissions
+- **Insights Section**: highest spending category, monthly comparison, savings-related observations, and average daily spending
+- **State Management**: handled with React Context plus custom hooks
+- **UI / UX**: responsive layout, dark mode, empty states, sticky header, and chart loading placeholders
+
 ## Tech Stack
 
 - React 19
