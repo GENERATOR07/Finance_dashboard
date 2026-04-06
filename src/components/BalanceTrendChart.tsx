@@ -34,12 +34,17 @@ export const BalanceTrendChart = ({
   const gridColor = darkMode ? "#374151" : "#e5e7eb"
   const tooltipBackground = darkMode ? "#1f2937" : "#ffffff"
   const tooltipBorder = darkMode ? "#374151" : "#e5e7eb"
+  const formatAxisAmount = (value: number) =>
+    new Intl.NumberFormat("en-US", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(value)
 
   if (chartData.length === 0) {
     return (
       <div className="rounded-lg border border-border bg-card p-6">
         <h3 className="mb-4 text-foreground">Balance Trend</h3>
-        <div className="flex h-[300px] items-center justify-center text-sm text-muted-foreground">
+        <div className="flex h-[260px] items-center justify-center text-sm text-muted-foreground sm:h-[300px]">
           No monthly trend data yet
         </div>
       </div>
@@ -49,18 +54,26 @@ export const BalanceTrendChart = ({
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-4 text-foreground">Balance Trend</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+      <div className="h-[260px] sm:h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={chartData}
+          margin={{ top: 8, right: 8, left: -20, bottom: 8 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
           <XAxis
             dataKey="month"
             stroke={axisColor}
             style={{ fontSize: "0.75rem" }}
+            tickFormatter={(value: string) => value.split(" ")[0]}
+            minTickGap={24}
+            tickMargin={8}
           />
           <YAxis
             stroke={axisColor}
             style={{ fontSize: "0.75rem" }}
-            tickFormatter={(value: number) => `$${value.toLocaleString()}`}
+            width={44}
+            tickFormatter={(value: number) => `$${formatAxisAmount(value)}`}
           />
           <Tooltip
             contentStyle={{
@@ -80,7 +93,10 @@ export const BalanceTrendChart = ({
               })}`
             }}
           />
-          <Legend wrapperStyle={{ color: axisColor, fontSize: "0.875rem" }} />
+          <Legend
+            wrapperStyle={{ color: axisColor, fontSize: "0.75rem" }}
+            iconSize={10}
+          />
           <Line
             type="monotone"
             dataKey="income"
@@ -113,6 +129,7 @@ export const BalanceTrendChart = ({
           />
         </LineChart>
       </ResponsiveContainer>
+      </div>
     </div>
   )
 }

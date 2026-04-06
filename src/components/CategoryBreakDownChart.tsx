@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { PieChart, Pie, ResponsiveContainer, Tooltip } from "recharts"
+import { Cell, PieChart, Pie, ResponsiveContainer, Tooltip } from "recharts"
 import type { CategoryTotal } from "../../types/finance"
 
 interface CategoryBreakdownChartProps {
@@ -31,80 +31,75 @@ const CategoryBreakdownChart = ({
       })),
     [data]
   )
-
-  const labelColor = darkMode ? "#f3f4f6" : "#111827"
-  const renderLabel = ({
-    cx = 0,
-    cy = 0,
-    midAngle = 0,
-    innerRadius = 0,
-    outerRadius = 0,
-    fill,
-    name,
-    percent,
-  }: {
-    cx?: number
-    cy?: number
-    midAngle?: number
-    innerRadius?: number
-    outerRadius?: number
-    fill?: string
-    name?: string
-    percent?: number
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 1.15
-    const x = cx + radius * Math.cos((-midAngle * Math.PI) / 180)
-    const y = cy + radius * Math.sin((-midAngle * Math.PI) / 180)
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill={fill ?? labelColor}
-        fontSize={12}
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-      >
-        {`${name ?? ""}: ${((percent ?? 0) * 100).toFixed(0)}%`}
-      </text>
-    )
-  }
+  const totalValue = useMemo(
+    () => chartData.reduce((sum, item) => sum + item.value, 0),
+    [chartData]
+  )
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-4 text-foreground">Spending by Category</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={chartData}
-            cx="50%"
-            cy="50%"
-            isAnimationActive={false}
-            labelLine={false}
-            label={renderLabel}
-            outerRadius={80}
-            dataKey="value"
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: darkMode ? "#1f2937" : "#ffffff",
-              border: `1px solid ${darkMode ? "#374151" : "#e5e7eb"}`,
-              borderRadius: "0.5rem",
-              fontSize: "0.875rem",
-            }}
-            formatter={(value) => {
-              const v = Array.isArray(value) ? value[0] : value
-              if (v === undefined || v === null) return ""
-              const num = typeof v === "number" ? v : Number(v)
-              if (Number.isNaN(num)) return String(v)
-              return `$${num.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}`
-            }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      <div className="h-[260px] sm:h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              innerRadius={48}
+              outerRadius={80}
+              paddingAngle={2}
+              isAnimationActive={false}
+              labelLine={false}
+              dataKey="value"
+            >
+              {chartData.map((entry) => (
+                <Cell key={entry.name} fill={entry.fill} />
+              ))}
+            </Pie>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? "#1f2937" : "#ffffff",
+                border: `1px solid ${darkMode ? "#374151" : "#e5e7eb"}`,
+                borderRadius: "0.5rem",
+                fontSize: "0.875rem",
+              }}
+              formatter={(value) => {
+                const v = Array.isArray(value) ? value[0] : value
+                if (v === undefined || v === null) return ""
+                const num = typeof v === "number" ? v : Number(v)
+                if (Number.isNaN(num)) return String(v)
+                return `$${num.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {chartData.map((item) => (
+          <div
+            key={item.name}
+            className="flex items-center justify-between gap-3 rounded-lg bg-muted/40 px-3 py-2"
+          >
+            <div className="flex min-w-0 items-center gap-2">
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: item.fill }}
+              />
+              <span className="truncate text-sm text-foreground">{item.name}</span>
+            </div>
+            <span className="shrink-0 text-sm text-muted-foreground">
+              {item.value > 0 && totalValue > 0
+                ? `${Math.round((item.value / totalValue) * 100)}%`
+                : "0%"}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

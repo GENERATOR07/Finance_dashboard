@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { BalanceTrendChart } from "./components/BalanceTrendChart"
 import CategoryBreakdownChart from "./components/CategoryBreakDownChart"
 import InsightsSection from "./components/InsightsSection"
@@ -9,13 +9,15 @@ import {
   getMonthlyData,
 } from "../utils/calculations"
 import TransactionList from "./components/TransactionList"
-import { TrendingDown, TrendingUp, Wallet } from "lucide-react"
+import { ArrowUp, TrendingDown, TrendingUp, Wallet } from "lucide-react"
 import { useTheme } from "./components/theme-provider"
 import Header from "./components/Header"
 import useFinance from "@/hooks/useFinance"
+import { Button } from "@/components/ui/button"
 
 export function App() {
   const { transactions, isLoading, error } = useFinance()
+  const [showBackToTop, setShowBackToTop] = useState(false)
   const total = useMemo(() => calculateTotals(transactions), [transactions])
   const monthlyData = useMemo(
     () => getMonthlyData(transactions),
@@ -29,6 +31,24 @@ export function App() {
   const handleClick = () => {
     setTheme(theme === "light" ? "dark" : "light")
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500)
+    }
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <div className="min-h-screen">
       <Header darkMode={theme === "dark"} toggleDarkMode={handleClick} />
@@ -76,12 +96,25 @@ export function App() {
             <div>
               <InsightsSection transactions={transactions} />
             </div>
-            <div className="mt-8">
+            <div id="transactions-section" className="mt-8 scroll-mt-24">
               <TransactionList />
             </div>
           </>
         )}
       </main>
+
+      {showBackToTop ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          onClick={handleBackToTop}
+          className="fixed right-4 bottom-4 z-30 shadow-md sm:right-6 sm:bottom-6"
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      ) : null}
     </div>
   )
 }
