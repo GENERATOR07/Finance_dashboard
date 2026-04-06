@@ -34,7 +34,6 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     (): FinanceContextValue => ({
       transactions,
-      userRole: "admin",
       addTransaction,
       updateTransaction,
       deleteTransaction,

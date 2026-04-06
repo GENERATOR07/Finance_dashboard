@@ -1,7 +1,6 @@
 import { Moon, Sun, User } from "lucide-react"
 
-import type { UserRole } from "types/finance"
-import { useState } from "react"
+import useRole from "@/hooks/useRole"
 
 interface HeaderProps {
   darkMode: boolean
@@ -9,10 +8,8 @@ interface HeaderProps {
 }
 
 const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
-  const [userRole, setUserRole] = useState<UserRole | null>(null)
-  const handleRoleChange = (role: UserRole) => {
-    setUserRole(role)
-  }
+  const { userRole, setUserRole } = useRole()
+
   return (
     <header className="border-b border-border bg-card px-6 py-4">
       <div className="flex items-center justify-between">
@@ -34,7 +31,7 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
           <div className="flex items-center gap-2 rounded-lg bg-muted p-1">
             <User className="ml-2 h-4 w-4 text-muted-foreground" />
             <button
-              onClick={() => handleRoleChange("viewer")}
+              onClick={() => setUserRole("viewer")}
               className={`rounded-md px-3 py-1.5 transition-colors ${
                 userRole === "viewer"
                   ? "bg-background text-foreground shadow-sm"
@@ -44,7 +41,7 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
               Viewer
             </button>
             <button
-              onClick={() => handleRoleChange("admin")}
+              onClick={() => setUserRole("admin")}
               className={`rounded-md px-3 py-1.5 transition-colors ${
                 userRole === "admin"
                   ? "bg-background text-foreground shadow-sm"

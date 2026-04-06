@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import { Download, Plus } from "lucide-react"
 import type { Transaction } from "types/finance"
 import useFinance from "@/hooks/useFinance"
+import useRole from "@/hooks/useRole"
 import { Button } from "@/components/ui/button"
 import { DeleteTransactionModal } from "./transaction-list/DeleteTransactionModal"
 import { TransactionFilters } from "./transaction-list/TransactionFilters"
@@ -18,7 +19,8 @@ import type {
 } from "./transaction-list/types"
 
 export function TransactionList() {
-  const { transactions, userRole } = useFinance()
+  const { transactions } = useFinance()
+  const { userRole } = useRole()
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState<TransactionFilterType>("all")
   const [filterCategory, setFilterCategory] = useState("all")

@@ -5,13 +5,16 @@ import "./index.css"
 import App from "./App.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 import { FinanceProvider } from "@/components/finance-provider.tsx"
+import { RoleProvider } from "@/components/role-provider.tsx"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <FinanceProvider>
-        <App />
-      </FinanceProvider>
+      <RoleProvider>
+        <FinanceProvider>
+          <App />
+        </FinanceProvider>
+      </RoleProvider>
     </ThemeProvider>
   </StrictMode>
 )
