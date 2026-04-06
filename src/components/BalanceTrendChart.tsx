@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
+import { useMemo } from "react"
 import type { MonthlyData } from "../../types/finance"
 
 interface BalanceTrendChartProps {
@@ -28,29 +29,43 @@ export const BalanceTrendChart = ({
   data = DEFAULT_DATA,
   darkMode,
 }: BalanceTrendChartProps) => {
+  const chartData = useMemo(() => data, [data])
+  const axisColor = darkMode ? "#9ca3af" : "#6b7280"
+  const gridColor = darkMode ? "#374151" : "#e5e7eb"
+  const tooltipBackground = darkMode ? "#1f2937" : "#ffffff"
+  const tooltipBorder = darkMode ? "#374151" : "#e5e7eb"
+
+  if (chartData.length === 0) {
+    return (
+      <div className="rounded-lg border border-border bg-card p-6">
+        <h3 className="mb-4 text-foreground">Balance Trend</h3>
+        <div className="flex h-[300px] items-center justify-center text-sm text-muted-foreground">
+          No monthly trend data yet
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-4 text-foreground">Balance Trend</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke={darkMode ? "#374151" : "#e5e7eb"}
-          />
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
           <XAxis
             dataKey="month"
-            stroke={darkMode ? "#9ca3af" : "#6b7280"}
+            stroke={axisColor}
             style={{ fontSize: "0.75rem" }}
           />
           <YAxis
-            stroke={darkMode ? "#9ca3af" : "#6b7280"}
+            stroke={axisColor}
             style={{ fontSize: "0.75rem" }}
-            tickFormatter={(value) => `$${value.toLocaleString()}`}
+            tickFormatter={(value: number) => `$${value.toLocaleString()}`}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: darkMode ? "#1f2937" : "#ffffff",
-              border: `1px solid ${darkMode ? "#374151" : "#e5e7eb"}`,
+              backgroundColor: tooltipBackground,
+              border: `1px solid ${tooltipBorder}`,
               borderRadius: "0.5rem",
               fontSize: "0.875rem",
             }}
@@ -65,13 +80,16 @@ export const BalanceTrendChart = ({
               })}`
             }}
           />
-          <Legend wrapperStyle={{ fontSize: "0.875rem" }} />
+          <Legend wrapperStyle={{ color: axisColor, fontSize: "0.875rem" }} />
           <Line
             type="monotone"
             dataKey="income"
             stroke="#10b981"
             strokeWidth={2}
             name="Income"
+            dot={false}
+            activeDot={{ r: 5 }}
+            isAnimationActive={false}
           />
           <Line
             type="monotone"
@@ -79,6 +97,9 @@ export const BalanceTrendChart = ({
             stroke="#ef4444"
             strokeWidth={2}
             name="Expenses"
+            dot={false}
+            activeDot={{ r: 5 }}
+            isAnimationActive={false}
           />
           <Line
             type="monotone"
@@ -86,6 +107,9 @@ export const BalanceTrendChart = ({
             stroke="#3b82f6"
             strokeWidth={2}
             name="Balance"
+            dot={false}
+            activeDot={{ r: 5 }}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>

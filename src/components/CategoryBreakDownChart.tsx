@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { PieChart, Pie, ResponsiveContainer, Tooltip } from "recharts"
 import type { CategoryTotal } from "../../types/finance"
 
@@ -21,11 +22,53 @@ const CategoryBreakdownChart = ({
   data,
   darkMode,
 }: CategoryBreakdownChartProps) => {
-  const chartData = data.slice(0, 8).map((item, index) => ({
-    name: item.category,
-    value: item.total,
-    fill: COLORS[index % COLORS.length],
-  }))
+  const chartData = useMemo(
+    () =>
+      data.slice(0, 8).map((item, index) => ({
+        name: item.category,
+        value: item.total,
+        fill: COLORS[index % COLORS.length],
+      })),
+    [data]
+  )
+
+  const labelColor = darkMode ? "#f3f4f6" : "#111827"
+  const renderLabel = ({
+    cx = 0,
+    cy = 0,
+    midAngle = 0,
+    innerRadius = 0,
+    outerRadius = 0,
+    fill,
+    name,
+    percent,
+  }: {
+    cx?: number
+    cy?: number
+    midAngle?: number
+    innerRadius?: number
+    outerRadius?: number
+    fill?: string
+    name?: string
+    percent?: number
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.15
+    const x = cx + radius * Math.cos((-midAngle * Math.PI) / 180)
+    const y = cy + radius * Math.sin((-midAngle * Math.PI) / 180)
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill={fill ?? labelColor}
+        fontSize={12}
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${name ?? ""}: ${((percent ?? 0) * 100).toFixed(0)}%`}
+      </text>
+    )
+  }
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
@@ -36,10 +79,9 @@ const CategoryBreakdownChart = ({
             data={chartData}
             cx="50%"
             cy="50%"
+            isAnimationActive={false}
             labelLine={false}
-            label={({ name, percent }) =>
-              `${name ?? ""}: ${((percent ?? 0) * 100).toFixed(0)}%`
-            }
+            label={renderLabel}
             outerRadius={80}
             dataKey="value"
           />

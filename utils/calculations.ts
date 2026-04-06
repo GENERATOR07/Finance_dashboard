@@ -1,4 +1,4 @@
-import { format, parseISO, startOfMonth } from "date-fns"
+import { format, parseISO, startOfMonth, subMonths } from "date-fns"
 import type { CategoryTotal, MonthlyData, Transaction } from "../types/finance"
 
 export function calculateTotals(transactions: Transaction[]) {
@@ -33,14 +33,20 @@ export function getMonthlyData(transactions: Transaction[]): MonthlyData[] {
     monthMap.set(monthKey, current)
   })
 
-  return Array.from(monthMap.entries())
-    .map(([month, data]) => ({
-      month: format(parseISO(`${month}-01`), "MMM yyyy"),
+  const currentMonthStart = startOfMonth(new Date())
+
+  return Array.from({ length: 6 }, (_, index) => {
+    const monthDate = subMonths(currentMonthStart, 5 - index)
+    const monthKey = format(monthDate, "yyyy-MM")
+    const data = monthMap.get(monthKey) || { income: 0, expenses: 0 }
+
+    return {
+      month: format(monthDate, "MMM yyyy"),
       income: data.income,
       expenses: data.expenses,
       balance: data.income - data.expenses,
-    }))
-    .sort((a, b) => a.month.localeCompare(b.month))
+    }
+  })
 }
 export function getCategoryTotals(
   transactions: Transaction[]
