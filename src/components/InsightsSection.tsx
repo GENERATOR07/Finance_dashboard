@@ -4,8 +4,8 @@ import {
   calculateTotals,
   getMonthlyComparison,
   getTopCategory,
-} from "../../utils/calculations"
-import type { Transaction } from "types/finance"
+} from "@/utils/calculations"
+import type { Transaction } from "@/types/finance"
 
 interface InsightsSectionProps {
   transactions: Transaction[]

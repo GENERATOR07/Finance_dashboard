@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import type { Transaction } from "types/finance"
+import type { Transaction } from "@/types/finance"
 import type {
   TransactionFilterType,
   TransactionFormData,

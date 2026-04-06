@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client"
 
 import "./index.css"
 import App from "@/App"
-import { FinanceProvider } from "@/components/finance-provider"
-import { RoleProvider } from "@/components/role-provider"
-import { ThemeProvider } from "@/components/theme-provider"
+import { FinanceProvider } from "@/providers/finance-provider"
+import { RoleProvider } from "@/providers/role-provider"
+import { ThemeProvider } from "@/providers/theme-provider"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

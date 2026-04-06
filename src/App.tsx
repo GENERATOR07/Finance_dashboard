@@ -6,15 +6,15 @@ import CategoryBreakdownChart from "@/components/CategoryBreakDownChart"
 import Header from "@/components/Header"
 import InsightsSection from "@/components/InsightsSection"
 import SummaryCard from "@/components/SummaryCard"
-import { useTheme } from "@/components/theme-provider"
 import TransactionList from "@/components/TransactionList"
 import useFinance from "@/hooks/useFinance"
+import { useTheme } from "@/providers/theme-provider"
 import { Button } from "@/components/ui/button"
 import {
   calculateTotals,
   getCategoryTotals,
   getMonthlyData,
-} from "../utils/calculations"
+} from "@/utils/calculations"
 
 export function App() {
   const { transactions, isLoading, error } = useFinance()

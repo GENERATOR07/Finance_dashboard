@@ -1,5 +1,9 @@
 import { format, parseISO, startOfMonth, subMonths } from "date-fns"
-import type { CategoryTotal, MonthlyData, Transaction } from "../types/finance"
+import type {
+  CategoryTotal,
+  MonthlyData,
+  Transaction,
+} from "@/types/finance"
 
 export function calculateTotals(transactions: Transaction[]) {
   const income = transactions

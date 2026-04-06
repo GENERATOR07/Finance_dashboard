@@ -1,6 +1,6 @@
-import type { Transaction } from "types/finance"
+import type { Transaction } from "@/types/finance"
 
-import { generateMockTransactions } from "../../utils/mockData"
+import { generateMockTransactions } from "@/utils/mockData"
 
 const FETCH_DELAY_MS = 450
 const MUTATION_DELAY_MS = 600

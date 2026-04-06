@@ -16,7 +16,7 @@ import {
   FinanceContext,
   type FinanceContextValue,
 } from "@/context/FinanceContext"
-import type { Transaction } from "types/finance"
+import type { Transaction } from "@/types/finance"
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>([])

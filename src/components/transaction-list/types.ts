@@ -1,4 +1,4 @@
-import type { Transaction, TransactionType } from "types/finance"
+import type { Transaction, TransactionType } from "@/types/finance"
 
 export type TransactionFilterType = "all" | TransactionType
 export type TransactionSortBy = "date" | "amount"

@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts"
 
-import type { MonthlyData } from "types/finance"
+import type { MonthlyData } from "@/types/finance"
 
 interface BalanceTrendChartProps {
   data?: MonthlyData[]

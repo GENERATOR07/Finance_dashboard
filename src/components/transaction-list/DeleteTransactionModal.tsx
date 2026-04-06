@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { Transaction } from "types/finance"
+import type { Transaction } from "@/types/finance"
 
 import { Button } from "@/components/ui/button"
 import useFinance from "@/hooks/useFinance"

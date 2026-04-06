@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns"
 import { Pencil, Trash2 } from "lucide-react"
-import type { Transaction } from "types/finance"
+import type { Transaction } from "@/types/finance"
 
 import { Button } from "@/components/ui/button"
 

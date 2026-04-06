@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import type { UserRole } from "types/finance"
+import type { UserRole } from "@/types/finance"
 
 export type RoleContextValue = {
   userRole: UserRole

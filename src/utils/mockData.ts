@@ -1,4 +1,4 @@
-import type { Transaction } from "../types/finance"
+import type { Transaction } from "@/types/finance"
 
 const categories = {
   income: ["Salary", "Freelance", "Investment", "Gift", "Bonus"],
