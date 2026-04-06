@@ -32,6 +32,7 @@ export function DeleteTransactionModal({
     <ModalShell
       title="Delete Transaction"
       description="This action cannot be undone. The transaction will be removed from the dashboard immediately."
+      onRequestClose={isMutating ? undefined : onClose}
     >
       {submitError ? (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">

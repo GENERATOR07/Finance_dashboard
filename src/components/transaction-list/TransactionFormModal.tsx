@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import type { Transaction } from "@/types/finance"
 
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,7 @@ export function TransactionFormModal({
   const isEditing = transaction != null
   const [formData, setFormData] = useState(createTransactionFormData(transaction))
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const formId = useId()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,6 +52,7 @@ export function TransactionFormModal({
           ? "Update the transaction details and save your changes."
           : "Capture a new transaction for your finance dashboard."
       }
+      onRequestClose={isMutating ? undefined : onClose}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         {submitError ? (
@@ -59,8 +61,9 @@ export function TransactionFormModal({
           </div>
         ) : null}
 
-        <FormField label="Date">
+        <FormField label="Date" controlId={`${formId}-date`}>
           <input
+            id={`${formId}-date`}
             type="date"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
@@ -70,8 +73,9 @@ export function TransactionFormModal({
           />
         </FormField>
 
-        <FormField label="Type">
+        <FormField label="Type" controlId={`${formId}-type`}>
           <select
+            id={`${formId}-type`}
             value={formData.type}
             onChange={(e) =>
               setFormData({
@@ -91,8 +95,9 @@ export function TransactionFormModal({
           </select>
         </FormField>
 
-        <FormField label="Category">
+        <FormField label="Category" controlId={`${formId}-category`}>
           <input
+            id={`${formId}-category`}
             type="text"
             value={formData.category}
             onChange={(e) =>
@@ -105,8 +110,9 @@ export function TransactionFormModal({
           />
         </FormField>
 
-        <FormField label="Description">
+        <FormField label="Description" controlId={`${formId}-description`}>
           <input
+            id={`${formId}-description`}
             type="text"
             value={formData.description}
             onChange={(e) =>
@@ -119,8 +125,9 @@ export function TransactionFormModal({
           />
         </FormField>
 
-        <FormField label="Amount">
+        <FormField label="Amount" controlId={`${formId}-amount`}>
           <input
+            id={`${formId}-amount`}
             type="number"
             step="0.01"
             value={formData.amount}
@@ -159,14 +166,18 @@ export function TransactionFormModal({
 
 function FormField({
   label,
+  controlId,
   children,
 }: {
   label: string
+  controlId: string
   children: React.ReactNode
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm text-foreground">{label}</label>
+      <label htmlFor={controlId} className="mb-2 block text-sm text-foreground">
+        {label}
+      </label>
       {children}
     </div>
   )

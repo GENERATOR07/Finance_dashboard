@@ -40,7 +40,7 @@ const CategoryBreakdownChart = ({
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-4 text-foreground">Spending by Category</h3>
-      <div className="h-[260px] sm:h-[300px]">
+      <div className="h-65 sm:h-75">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -91,7 +91,9 @@ const CategoryBreakdownChart = ({
                 className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: item.fill }}
               />
-              <span className="truncate text-sm text-foreground">{item.name}</span>
+              <span className="truncate text-sm text-foreground">
+                {item.name}
+              </span>
             </div>
             <span className="shrink-0 text-sm text-muted-foreground">
               {item.value > 0 && totalValue > 0

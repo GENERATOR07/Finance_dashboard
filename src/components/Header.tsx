@@ -16,7 +16,7 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-card/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-card/80 sm:px-6 sm:py-4">
+    <header className="sticky top-0 z-40 border-b border-border bg-card/95 px-4 py-3 backdrop-blur supports-backdrop-filter:bg-card/80 sm:px-6 sm:py-4">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
         <div className="min-w-0">
           <h1 className="text-foreground">Finance Dashboard</h1>
@@ -39,9 +39,17 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
             Transactions
           </button>
 
-          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-muted/60 p-1">
+          <div
+            role="radiogroup"
+            aria-label="User role"
+            className="flex items-center gap-1.5 rounded-lg border border-border bg-muted/60 p-1"
+          >
             <User className="ml-1 h-4 w-4 text-muted-foreground" />
             <button
+              type="button"
+              role="radio"
+              aria-checked={userRole === "viewer"}
+              aria-pressed={userRole === "viewer"}
               onClick={() => setUserRole("viewer")}
               className={`rounded-md px-2 py-1 text-sm transition-colors ${
                 userRole === "viewer"
@@ -52,6 +60,10 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
               Viewer
             </button>
             <button
+              type="button"
+              role="radio"
+              aria-checked={userRole === "admin"}
+              aria-pressed={userRole === "admin"}
               onClick={() => setUserRole("admin")}
               className={`rounded-md px-2 py-1 text-sm transition-colors ${
                 userRole === "admin"
@@ -65,6 +77,7 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
 
           {/* Dark Mode Toggle */}
           <button
+            type="button"
             onClick={toggleDarkMode}
             className="rounded-lg bg-muted p-2 transition-colors hover:bg-accent"
             aria-label="Toggle dark mode"

@@ -45,7 +45,7 @@ export const BalanceTrendChart = ({
     return (
       <div className="rounded-lg border border-border bg-card p-6">
         <h3 className="mb-4 text-foreground">Balance Trend</h3>
-        <div className="flex h-[260px] items-center justify-center text-sm text-muted-foreground sm:h-[300px]">
+        <div className="flex h-65 items-center justify-center text-sm text-muted-foreground sm:h-75">
           No monthly trend data yet
         </div>
       </div>
@@ -55,81 +55,81 @@ export const BalanceTrendChart = ({
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-4 text-foreground">Balance Trend</h3>
-      <div className="h-[260px] sm:h-[300px]">
+      <div className="h-65 sm:h-75">
         <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={chartData}
-          margin={{ top: 8, right: 8, left: -20, bottom: 8 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-          <XAxis
-            dataKey="month"
-            stroke={axisColor}
-            style={{ fontSize: "0.75rem" }}
-            tickFormatter={(value: string) => value.split(" ")[0]}
-            minTickGap={24}
-            tickMargin={8}
-          />
-          <YAxis
-            stroke={axisColor}
-            style={{ fontSize: "0.75rem" }}
-            width={44}
-            tickFormatter={(value: number) => `$${formatAxisAmount(value)}`}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: tooltipBackground,
-              border: `1px solid ${tooltipBorder}`,
-              borderRadius: "0.5rem",
-              fontSize: "0.875rem",
-            }}
-            formatter={(value) => {
-              const v = Array.isArray(value) ? value[0] : value
-              if (v === undefined || v === null) return ""
-              const num = typeof v === "number" ? v : Number(v)
-              if (Number.isNaN(num)) return String(v)
-              return `$${num.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}`
-            }}
-          />
-          <Legend
-            wrapperStyle={{ color: axisColor, fontSize: "0.75rem" }}
-            iconSize={10}
-          />
-          <Line
-            type="monotone"
-            dataKey="income"
-            stroke="#10b981"
-            strokeWidth={2}
-            name="Income"
-            dot={false}
-            activeDot={{ r: 5 }}
-            isAnimationActive={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="expenses"
-            stroke="#ef4444"
-            strokeWidth={2}
-            name="Expenses"
-            dot={false}
-            activeDot={{ r: 5 }}
-            isAnimationActive={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="balance"
-            stroke="#3b82f6"
-            strokeWidth={2}
-            name="Balance"
-            dot={false}
-            activeDot={{ r: 5 }}
-            isAnimationActive={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+          <LineChart
+            data={chartData}
+            margin={{ top: 8, right: 8, left: -20, bottom: 8 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+            <XAxis
+              dataKey="month"
+              stroke={axisColor}
+              style={{ fontSize: "0.75rem" }}
+              tickFormatter={(value: string) => value.split(" ")[0]}
+              minTickGap={24}
+              tickMargin={8}
+            />
+            <YAxis
+              stroke={axisColor}
+              style={{ fontSize: "0.75rem" }}
+              width={44}
+              tickFormatter={(value: number) => `$${formatAxisAmount(value)}`}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: tooltipBackground,
+                border: `1px solid ${tooltipBorder}`,
+                borderRadius: "0.5rem",
+                fontSize: "0.875rem",
+              }}
+              formatter={(value) => {
+                const v = Array.isArray(value) ? value[0] : value
+                if (v === undefined || v === null) return ""
+                const num = typeof v === "number" ? v : Number(v)
+                if (Number.isNaN(num)) return String(v)
+                return `$${num.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`
+              }}
+            />
+            <Legend
+              wrapperStyle={{ color: axisColor, fontSize: "0.75rem" }}
+              iconSize={10}
+            />
+            <Line
+              type="monotone"
+              dataKey="income"
+              stroke="#10b981"
+              strokeWidth={2}
+              name="Income"
+              dot={false}
+              activeDot={{ r: 5 }}
+              isAnimationActive={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="expenses"
+              stroke="#ef4444"
+              strokeWidth={2}
+              name="Expenses"
+              dot={false}
+              activeDot={{ r: 5 }}
+              isAnimationActive={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="balance"
+              stroke="#3b82f6"
+              strokeWidth={2}
+              name="Balance"
+              dot={false}
+              activeDot={{ r: 5 }}
+              isAnimationActive={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   )

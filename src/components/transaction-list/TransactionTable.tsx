@@ -41,7 +41,7 @@ export function TransactionTable({
       </div>
 
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[720px]">
+        <table className="w-full min-w-180">
           <thead className="border-b border-border">
             <tr>
               <TableHeadCell align="left">Date</TableHeadCell>
