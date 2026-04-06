@@ -4,6 +4,10 @@ A responsive finance dashboard built with React, TypeScript, Vite, and Tailwind 
 
 This project was completed as a frontend assessment. It focuses on clear UI structure, responsive design, modular React architecture, and realistic client-side data handling through a fake API layer.
 
+## Live Demo
+
+[View Deployment](https://finance-dashboard-euf7-nydthwwnr-generator07s-projects.vercel.app/)
+
 ## Features
 
 - Dashboard summary cards for balance, income, and expenses
