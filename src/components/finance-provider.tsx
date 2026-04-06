@@ -5,17 +5,18 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import type { Transaction } from "../../types/finance"
-import {
-  FinanceContext,
-  type FinanceContextValue,
-} from "@/context/FinanceContext"
+
 import {
   createTransaction,
   deleteTransaction as deleteTransactionRequest,
   fetchTransactions,
   updateTransaction as updateTransactionRequest,
 } from "@/api/transactions"
+import {
+  FinanceContext,
+  type FinanceContextValue,
+} from "@/context/FinanceContext"
+import type { Transaction } from "types/finance"
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>([])

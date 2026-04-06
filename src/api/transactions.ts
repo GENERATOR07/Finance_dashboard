@@ -1,4 +1,5 @@
 import type { Transaction } from "types/finance"
+
 import { generateMockTransactions } from "../../utils/mockData"
 
 const FETCH_DELAY_MS = 450

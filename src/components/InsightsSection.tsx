@@ -1,10 +1,11 @@
 import { TrendingUp, TrendingDown, AlertCircle, DollarSign } from "lucide-react"
-import type { Transaction } from "../../types/finance"
+
 import {
-  getTopCategory,
-  getMonthlyComparison,
   calculateTotals,
+  getMonthlyComparison,
+  getTopCategory,
 } from "../../utils/calculations"
+import type { Transaction } from "types/finance"
 
 interface InsightsSectionProps {
   transactions: Transaction[]

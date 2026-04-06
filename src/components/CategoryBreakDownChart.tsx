@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Cell, PieChart, Pie, ResponsiveContainer, Tooltip } from "recharts"
-import type { CategoryTotal } from "../../types/finance"
+
+import type { CategoryTotal } from "types/finance"
 
 interface CategoryBreakdownChartProps {
   data: CategoryTotal[]

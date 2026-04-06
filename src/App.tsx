@@ -1,19 +1,20 @@
 import { useEffect, useMemo, useState } from "react"
-import { BalanceTrendChart } from "./components/BalanceTrendChart"
-import CategoryBreakdownChart from "./components/CategoryBreakDownChart"
-import InsightsSection from "./components/InsightsSection"
-import SummaryCard from "./components/SummaryCard"
+import { ArrowUp, TrendingDown, TrendingUp, Wallet } from "lucide-react"
+
+import { BalanceTrendChart } from "@/components/BalanceTrendChart"
+import CategoryBreakdownChart from "@/components/CategoryBreakDownChart"
+import Header from "@/components/Header"
+import InsightsSection from "@/components/InsightsSection"
+import SummaryCard from "@/components/SummaryCard"
+import { useTheme } from "@/components/theme-provider"
+import TransactionList from "@/components/TransactionList"
+import useFinance from "@/hooks/useFinance"
+import { Button } from "@/components/ui/button"
 import {
   calculateTotals,
   getCategoryTotals,
   getMonthlyData,
 } from "../utils/calculations"
-import TransactionList from "./components/TransactionList"
-import { ArrowUp, TrendingDown, TrendingUp, Wallet } from "lucide-react"
-import { useTheme } from "./components/theme-provider"
-import Header from "./components/Header"
-import useFinance from "@/hooks/useFinance"
-import { Button } from "@/components/ui/button"
 
 export function App() {
   const { transactions, isLoading, error } = useFinance()

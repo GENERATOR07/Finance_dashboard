@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import {
   CartesianGrid,
   Legend,
@@ -8,8 +9,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { useMemo } from "react"
-import type { MonthlyData } from "../../types/finance"
+
+import type { MonthlyData } from "types/finance"
 
 interface BalanceTrendChartProps {
   data?: MonthlyData[]
