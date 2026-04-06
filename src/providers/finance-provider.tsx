@@ -12,6 +12,7 @@ import {
   fetchTransactions,
   updateTransaction as updateTransactionRequest,
 } from "@/api/transactions"
+import { readStoredTransactions } from "@/api/transaction-storage"
 import {
   FinanceContext,
   type FinanceContextValue,
@@ -19,12 +20,28 @@ import {
 import type { Transaction } from "@/types/finance"
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [bootState] = useState(() => {
+    const storedTransactions = readStoredTransactions()
+
+    return {
+      hasStoredTransactions: storedTransactions !== null,
+      initialTransactions: storedTransactions ?? [],
+    }
+  })
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    bootState.initialTransactions
+  )
+  const [isLoading, setIsLoading] = useState(
+    () => !bootState.hasStoredTransactions
+  )
   const [isMutating, setIsMutating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (bootState.hasStoredTransactions) {
+      return
+    }
+
     let isMounted = true
 
     async function loadTransactions() {
@@ -57,7 +74,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [bootState.hasStoredTransactions])
 
   const addTransaction = useCallback(async (input: Omit<Transaction, "id">) => {
     setIsMutating(true)

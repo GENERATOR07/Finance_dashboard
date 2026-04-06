@@ -19,6 +19,7 @@ import {
 export function App() {
   const { transactions, isLoading, error } = useFinance()
   const [showBackToTop, setShowBackToTop] = useState(false)
+  const [areChartsReady, setAreChartsReady] = useState(false)
   const total = useMemo(() => calculateTotals(transactions), [transactions])
   const monthlyData = useMemo(
     () => getMonthlyData(transactions),
@@ -32,6 +33,29 @@ export function App() {
   const handleClick = () => {
     setTheme(theme === "light" ? "dark" : "light")
   }
+
+  useEffect(() => {
+    if (isLoading || error) {
+      setAreChartsReady(false)
+      return
+    }
+
+    let isActive = true
+    let animationFrameId = 0
+
+    animationFrameId = window.requestAnimationFrame(() => {
+      animationFrameId = window.requestAnimationFrame(() => {
+        if (isActive) {
+          setAreChartsReady(true)
+        }
+      })
+    })
+
+    return () => {
+      isActive = false
+      window.cancelAnimationFrame(animationFrameId)
+    }
+  }, [isLoading, error])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,14 +109,23 @@ export function App() {
               />
             </div>
             <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <BalanceTrendChart
-                data={monthlyData}
-                darkMode={theme === "dark"}
-              />
-              <CategoryBreakdownChart
-                data={categoryTotals}
-                darkMode={theme === "dark"}
-              />
+              {areChartsReady ? (
+                <>
+                  <BalanceTrendChart
+                    data={monthlyData}
+                    darkMode={theme === "dark"}
+                  />
+                  <CategoryBreakdownChart
+                    data={categoryTotals}
+                    darkMode={theme === "dark"}
+                  />
+                </>
+              ) : (
+                <>
+                  <ChartSkeleton title="Balance Trend" />
+                  <ChartSkeleton title="Spending by Category" />
+                </>
+              )}
             </div>
             <div>
               <InsightsSection transactions={transactions} />
@@ -116,6 +149,16 @@ export function App() {
           <ArrowUp className="h-4 w-4" />
         </Button>
       ) : null}
+    </div>
+  )
+}
+
+function ChartSkeleton({ title }: { title: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-card p-6">
+      <div className="mb-4 h-6 w-40 rounded bg-muted/70" aria-hidden="true" />
+      <span className="sr-only">{title} chart is loading</span>
+      <div className="h-65 animate-pulse rounded-lg bg-muted/50 sm:h-75" />
     </div>
   )
 }

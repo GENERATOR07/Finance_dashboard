@@ -1,63 +1,17 @@
 import type { Transaction } from "@/types/finance"
 
+import { writeStoredTransactions } from "@/api/transaction-storage"
 import { generateMockTransactions } from "@/utils/mockData"
 
 const FETCH_DELAY_MS = 300
 const MUTATION_DELAY_MS = 400
-const TRANSACTIONS_STORAGE_KEY = "finance-dashboard-transactions"
 
 let transactionStore: Transaction[] | null = null
 
-function isTransaction(value: unknown): value is Transaction {
-  if (typeof value !== "object" || value === null) {
-    return false
-  }
-
-  const candidate = value as Record<string, unknown>
-  return (
-    typeof candidate.id === "string" &&
-    typeof candidate.date === "string" &&
-    typeof candidate.amount === "number" &&
-    typeof candidate.category === "string" &&
-    (candidate.type === "income" || candidate.type === "expense") &&
-    typeof candidate.description === "string"
-  )
-}
-
-function readStoredTransactions(): Transaction[] | null {
-  const rawValue = window.localStorage.getItem(TRANSACTIONS_STORAGE_KEY)
-
-  if (rawValue == null) {
-    return null
-  }
-
-  try {
-    const parsedValue: unknown = JSON.parse(rawValue)
-    if (!Array.isArray(parsedValue) || !parsedValue.every(isTransaction)) {
-      return null
-    }
-
-    return parsedValue
-  } catch {
-    return null
-  }
-}
-
-function writeStoredTransactions(transactions: Transaction[]) {
-  window.localStorage.setItem(
-    TRANSACTIONS_STORAGE_KEY,
-    JSON.stringify(transactions)
-  )
-}
-
 function ensureStore() {
   if (transactionStore == null) {
-    const storedTransactions = readStoredTransactions()
-    transactionStore = storedTransactions ?? generateMockTransactions()
-
-    if (storedTransactions == null) {
-      writeStoredTransactions(transactionStore)
-    }
+    transactionStore = generateMockTransactions()
+    writeStoredTransactions(transactionStore)
   }
 
   return transactionStore
@@ -70,6 +24,7 @@ function delay<T>(value: T, timeoutMs: number): Promise<T> {
 }
 
 export async function fetchTransactions(): Promise<Transaction[]> {
+  console.log("Fetching transactions...")
   return delay([...ensureStore()], FETCH_DELAY_MS)
 }
 
