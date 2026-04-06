@@ -5,6 +5,10 @@ export type FinanceContextValue = {
   transactions: Transaction[]
   userRole: UserRole
   addTransaction: (input: Omit<Transaction, "id">) => void
+  updateTransaction: (
+    id: string,
+    input: Omit<Transaction, "id">
+  ) => void
   deleteTransaction: (id: string) => void
 }
 

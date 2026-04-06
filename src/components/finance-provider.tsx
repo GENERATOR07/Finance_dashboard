@@ -16,6 +16,17 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     setTransactions((prev) => [...prev, { ...input, id }])
   }, [])
 
+  const updateTransaction = useCallback(
+    (id: string, input: Omit<Transaction, "id">) => {
+      setTransactions((prev) =>
+        prev.map((transaction) =>
+          transaction.id === id ? { ...input, id } : transaction
+        )
+      )
+    },
+    []
+  )
+
   const deleteTransaction = useCallback((id: string) => {
     setTransactions((prev) => prev.filter((t) => t.id !== id))
   }, [])
@@ -25,9 +36,10 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       transactions,
       userRole: "admin",
       addTransaction,
+      updateTransaction,
       deleteTransaction,
     }),
-    [transactions, addTransaction, deleteTransaction]
+    [transactions, addTransaction, updateTransaction, deleteTransaction]
   )
 
   return (
