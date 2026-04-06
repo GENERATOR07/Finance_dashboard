@@ -6,7 +6,7 @@ type ResolvedTheme = "dark" | "light"
 
 type ThemeProviderProps = {
   children: React.ReactNode
-  defaultTheme?: Theme
+  defaultTheme?: ResolvedTheme
   storageKey?: string
   disableTransitionOnChange?: boolean
 }
@@ -18,6 +18,7 @@ type ThemeProviderState = {
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
 const THEME_VALUES: Theme[] = ["dark", "light", "system"]
+const DEFAULT_RESOLVED_THEME: ResolvedTheme = "light"
 
 const ThemeProviderContext = React.createContext<
   ThemeProviderState | undefined
@@ -79,7 +80,7 @@ function isEditableTarget(target: EventTarget | null) {
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = DEFAULT_RESOLVED_THEME,
   storageKey = "theme",
   disableTransitionOnChange = true,
   ...props
@@ -90,12 +91,16 @@ export function ThemeProvider({
       return storedTheme
     }
 
-    return defaultTheme
+    return getSystemTheme()
   })
+  const [hasManualPreference, setHasManualPreference] = React.useState(() =>
+    isTheme(localStorage.getItem(storageKey))
+  )
 
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
       localStorage.setItem(storageKey, nextTheme)
+      setHasManualPreference(true)
       setThemeState(nextTheme)
     },
     [storageKey]
@@ -123,13 +128,13 @@ export function ThemeProvider({
   React.useEffect(() => {
     applyTheme(theme)
 
-    if (theme !== "system") {
+    if (hasManualPreference) {
       return undefined
     }
 
     const mediaQuery = window.matchMedia(COLOR_SCHEME_QUERY)
     const handleChange = () => {
-      applyTheme("system")
+      setThemeState(getSystemTheme())
     }
 
     mediaQuery.addEventListener("change", handleChange)
@@ -137,7 +142,7 @@ export function ThemeProvider({
     return () => {
       mediaQuery.removeEventListener("change", handleChange)
     }
-  }, [theme, applyTheme])
+  }, [theme, hasManualPreference, applyTheme])
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -168,6 +173,7 @@ export function ThemeProvider({
                 : "dark"
 
         localStorage.setItem(storageKey, nextTheme)
+        setHasManualPreference(true)
         return nextTheme
       })
     }
@@ -190,11 +196,13 @@ export function ThemeProvider({
       }
 
       if (isTheme(event.newValue)) {
+        setHasManualPreference(true)
         setThemeState(event.newValue)
         return
       }
 
-      setThemeState(defaultTheme)
+      setHasManualPreference(false)
+      setThemeState(getSystemTheme())
     }
 
     window.addEventListener("storage", handleStorageChange)
@@ -202,7 +210,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("storage", handleStorageChange)
     }
-  }, [defaultTheme, storageKey])
+  }, [storageKey])
 
   const value = React.useMemo(
     () => ({

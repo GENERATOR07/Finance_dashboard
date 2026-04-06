@@ -34,7 +34,9 @@ export function TransactionList() {
     useState<Transaction | null>(null)
 
   const categories = useMemo(() => {
-    const uniqueCategories = new Set(transactions.map((transaction) => transaction.category))
+    const uniqueCategories = new Set(
+      transactions.map((transaction) => transaction.category)
+    )
     return Array.from(uniqueCategories).sort()
   }, [transactions])
 
@@ -67,9 +69,9 @@ export function TransactionList() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <h3 className="text-foreground">Transactions</h3>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button type="button" variant="secondary" onClick={handleExport}>
             <Download className="h-4 w-4" />
             Export
