@@ -46,21 +46,29 @@ export function TransactionFilters({
       <select
         value={filterType}
         onChange={(e) => onFilterTypeChange(e.target.value as TransactionFilterType)}
-        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
+        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none dark:bg-card dark:text-foreground"
       >
-        <option value="all">All Types</option>
-        <option value="income">Income</option>
-        <option value="expense">Expense</option>
+        <option value="all" className="bg-card text-foreground">
+          All Types
+        </option>
+        <option value="income" className="bg-card text-foreground">
+          Income
+        </option>
+        <option value="expense" className="bg-card text-foreground">
+          Expense
+        </option>
       </select>
 
       <select
         value={filterCategory}
         onChange={(e) => onFilterCategoryChange(e.target.value)}
-        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
+        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none dark:bg-card dark:text-foreground"
       >
-        <option value="all">All Categories</option>
+        <option value="all" className="bg-card text-foreground">
+          All Categories
+        </option>
         {categories.map((category) => (
-          <option key={category} value={category}>
+          <option key={category} value={category} className="bg-card text-foreground">
             {category}
           </option>
         ))}
@@ -75,12 +83,20 @@ export function TransactionFilters({
             nextSortOrder as TransactionSortOrder
           )
         }}
-        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
+        className="bg-input-background rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none dark:bg-card dark:text-foreground"
       >
-        <option value="date-desc">Date (Newest)</option>
-        <option value="date-asc">Date (Oldest)</option>
-        <option value="amount-desc">Amount (High to Low)</option>
-        <option value="amount-asc">Amount (Low to High)</option>
+        <option value="date-desc" className="bg-card text-foreground">
+          Date (Newest)
+        </option>
+        <option value="date-asc" className="bg-card text-foreground">
+          Date (Oldest)
+        </option>
+        <option value="amount-desc" className="bg-card text-foreground">
+          Amount (High to Low)
+        </option>
+        <option value="amount-asc" className="bg-card text-foreground">
+          Amount (Low to High)
+        </option>
       </select>
     </div>
   )

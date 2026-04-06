@@ -78,11 +78,15 @@ export function TransactionFormModal({
                 type: e.target.value as "income" | "expense",
               })
             }
-            className="bg-input-background w-full rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
+            className="bg-input-background w-full rounded-lg border border-border px-4 py-2 text-foreground focus:ring-2 focus:ring-ring focus:outline-none dark:bg-card dark:text-foreground"
             disabled={isMutating}
           >
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
+            <option value="expense" className="bg-card text-foreground">
+              Expense
+            </option>
+            <option value="income" className="bg-card text-foreground">
+              Income
+            </option>
           </select>
         </FormField>
 
